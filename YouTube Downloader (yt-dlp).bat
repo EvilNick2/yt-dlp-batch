@@ -34,6 +34,7 @@ if not exist "backend\urls.txt" (
 
 if "%mode%" equ "1" (
 	set params=^
+		--ffmpeg-location "backend\ffmpeg\ffmpeg.exe" ^
 		-f "bv[height<=1440][vcodec^=avc]+ba[ext=m4a]" ^
 		-a backend\urls.txt ^
 		--embed-chapters ^
@@ -47,6 +48,7 @@ if "%mode%" equ "1" (
 
 if "%mode%" equ "2" (
 	set params=^
+		--ffmpeg-location "backend\ffmpeg\ffmpeg.exe" ^
 		-ciw ^
 		-a backend\urls.txt ^
 		-f m4a ^
