@@ -55,6 +55,7 @@ if "%mode%" equ "2" (
 	echo.
 	goto :askMakePLOrdered
 )
+
 :askMakePLOrdered
 	set /P ordered="Make playlist ordered? (Y/N) "
 
@@ -83,9 +84,7 @@ if "%ordered%" equ "n" (
 		-o "downloads\Music\%%(uploader)s\%%(title)s.%%(ext)s"
 )
 
-	
 goto :promptUrl
-
 
 :promptUrl
 	if not exist "backend\urls.txt" (
