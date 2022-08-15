@@ -55,36 +55,36 @@ if "%mode%" equ "2" (
 	echo.
 	goto :askMakePLOrdered
 )
-	:askMakePLOrdered
-		set /P ordered="Make playlist ordered? (Y/N) "
+:askMakePLOrdered
+	set /P ordered="Make playlist ordered? (Y/N) "
 
-	if "%ordered%" equ "" (
-		echo Input cannot be empty!
-		goto :askMakePLOrdered
-	)
+if "%ordered%" equ "" (
+	echo Input cannot be empty!
+	goto :askMakePLOrdered
+)
 
-	if "%ordered%" equ "y" (
-		set params=^
-			--ffmpeg-location "backend\ffmpeg\ffmpeg.exe" ^
-			-ciw ^
-			-a backend\urls.txt ^
-			-f m4a ^
-			--embed-metadata ^
-			-o "downloads\Music\%%(uploader)s\%%(playlist_index)s - %%(title)s.%%(ext)s"
-	)
+if "%ordered%" equ "y" (
+	set params=^
+		--ffmpeg-location "backend\ffmpeg\ffmpeg.exe" ^
+		-ciw ^
+		-a backend\urls.txt ^
+		-f m4a ^
+		--embed-metadata ^
+		-o "downloads\Music\%%(uploader)s\%%(playlist_index)s - %%(title)s.%%(ext)s"
+)
 
-	if "%ordered%" equ "n" (
-		set params=^
-			--ffmpeg-location "backend\ffmpeg\ffmpeg.exe" ^
-			-ciw ^
-			-a backend\urls.txt ^
-			-f m4a ^
-			--embed-metadata ^
-			-o "downloads\Music\%%(uploader)s\%%(title)s.%%(ext)s"
-	)
+if "%ordered%" equ "n" (
+	set params=^
+		--ffmpeg-location "backend\ffmpeg\ffmpeg.exe" ^
+		-ciw ^
+		-a backend\urls.txt ^
+		-f m4a ^
+		--embed-metadata ^
+		-o "downloads\Music\%%(uploader)s\%%(title)s.%%(ext)s"
+)
 
 	
-	goto :promptUrl
+goto :promptUrl
 
 
 :promptUrl
