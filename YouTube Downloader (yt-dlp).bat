@@ -53,8 +53,10 @@ if "%mode%" equ "1" (
 
 if "%mode%" equ "2" (
 	echo.
-
 	goto :askMakePLOrdered
+)
+	:askMakePLOrdered
+		set /P ordered="Make playlist ordered? (Y/N) "
 
 	if "%ordered%" equ "" (
 		echo Input cannot be empty!
@@ -83,7 +85,7 @@ if "%mode%" equ "2" (
 
 	
 	goto :promptUrl
-)
+
 
 :promptUrl
 	if not exist "backend\urls.txt" (
@@ -100,8 +102,6 @@ if "%mode%" equ "2" (
 		set /P pause="Paste your URLs into 'urls.txt', save the file then hit ENTER."
 	)
 
-:askMakePLOrdered
-	set /P ordered="Make playlist ordered? (Y/N) "
 
 backend\yt-dlp.exe ^
 %params%
