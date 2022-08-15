@@ -2,10 +2,21 @@
 
 title YouTube Downloader (yt-dlp)
 
+echo =====================================================
+echo   __   __   _____           ____     _        ____
+echo   \ \_/ /  ^|_   _^|   ___   ^|  _ \   ^| ^|      ^|  _ \
+echo    \   /     ^| ^|    ^|___^|  ^| ^| \ \  ^| ^|      ^|  __/
+echo     ^| ^|      ^| ^|           ^| ^|_/ /  ^| ^|___   ^| ^|
+echo     ^|_^|      ^|_^|           ^|____/   ^|_____^|  ^|_^|
+echo.
+echo =====================================================
+echo.
+
 :askMode
-	echo Modes:
+	echo --- DOWNLOAD MODES ---
 	echo 1. Videos
 	echo 2. Playlist/Music
+	echo.
 	set /P mode="Choose mode: "
 
 if "%mode%" gtr "2" (
@@ -24,11 +35,13 @@ if "%mode%" lss "1" (
 
 if not exist "backend\urls.txt" (
 	type nul > backend\urls.txt
+	@echo # Paste your video/playlist URLs below this line> backend\urls.txt
 	start backend\urls.txt
+	echo.
 	set /P pause="Paste your URLs into 'urls.txt', save the file then hit ENTER."
 ) else (
-	echo.
 	start backend\urls.txt
+	echo.
 	set /P pause="Paste your URLs into 'urls.txt', save the file then hit ENTER."
 )
 
@@ -58,5 +71,8 @@ if "%mode%" equ "2" (
 
 backend\yt-dlp.exe ^
 %params%
+
+echo.
+echo DOWNLOAD COMPLETE!
 
 pause
