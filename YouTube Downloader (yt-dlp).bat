@@ -36,8 +36,6 @@ if "%mode%" lss "1" (
 )
 
 if "%mode%" equ "1" (
-	goto :promptUrl
-
 	set params=^
 		--ffmpeg-location "backend\ffmpeg\ffmpeg.exe" ^
 		-f "bv[height<=1440][vcodec^=avc]+ba[ext=m4a]" ^
@@ -49,6 +47,8 @@ if "%mode%" equ "1" (
 		--embed-subs ^
 		--sub-langs en.* ^
 		-o "downloads\Videos\%%(uploader)s\%%(title)s.%%(ext)s"
+
+	goto :promptUrl
 )
 
 if "%mode%" equ "2" (
