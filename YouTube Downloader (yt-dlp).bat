@@ -40,8 +40,13 @@ if "%mode%" equ "1" (
 	goto :videoOrdered
 )
 
+if "%mode%" equ "2" (
+	echo.
+	goto :musicOrdered
+)
+
 :videoOrdered
-	set /P videoPL="Make video playlist ordered? (Y/N)"
+	set /P videoPL="Make video playlist ordered? (Y/N) "
 
 if "%videoPL%" equ "" (
 	echo Input cannot be empty!
@@ -78,11 +83,6 @@ if "%videoPL%" equ "n" (
 		-o "downloads\Videos\%%(uploader)s\%%(title)s.%%(ext)s"
 
 	goto :promptUrl
-)
-
-if "%mode%" equ "2" (
-	echo.
-	goto :musicOrdered
 )
 
 :musicOrdered
