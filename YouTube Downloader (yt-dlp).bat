@@ -15,7 +15,7 @@ echo.
 :askMode
 	echo --- DOWNLOAD MODES ---
 	echo 1. Videos
-	echo 2. Playlist/Music
+	echo 2. Music
 	echo.
 	set /P mode="Choose mode: "
 
@@ -36,9 +36,38 @@ if "%mode%" lss "1" (
 )
 
 if "%mode%" equ "1" (
+	echo.
+	goto :videoOrdered
+)
+
+:videoOrdered
+	set /P videoPL="Make video playlist ordered? (Y/N)"
+
+if "%videoPL%" equ "" (
+	echo Input cannot be empty!
+	goto :videoOrdered
+)
+
+if "%videoPL%" equ "y" (
 	set params=^
 		--ffmpeg-location "backend\ffmpeg\ffmpeg.exe" ^
-		-f "bv[height<=1440][vcodec^=avc]+ba[ext=m4a]" ^
+		-f "bv[height<=1080][vcodec^=avc]+ba[ext=m4a]" ^
+		-a backend\urls.txt ^
+		--embed-chapters ^
+		--embed-metadata ^
+		--embed-thumbnail ^
+		--convert-thumbnail jpg ^
+		--embed-subs ^
+		--sub-langs en.* ^
+		-o "downloads\Videos\%%(uploader)s\%%(playlist_index)s - %%(title)s.%%(ext)s"
+
+		goto :promptUrl
+)
+
+if "%videoPL%" equ "n" (
+	set params=^
+		--ffmpeg-location "backend\ffmpeg\ffmpeg.exe" ^
+		-f "bv[height<=1080][vcodec^=avc]+ba[ext=m4a]" ^
 		-a backend\urls.txt ^
 		--embed-chapters ^
 		--embed-metadata ^
@@ -53,18 +82,18 @@ if "%mode%" equ "1" (
 
 if "%mode%" equ "2" (
 	echo.
-	goto :askMakePLOrdered
+	goto :musicOrdered
 )
 
-:askMakePLOrdered
-	set /P ordered="Make playlist ordered? (Y/N) "
+:musicOrdered
+	set /P musicPL="Make audio playlist ordered? (Y/N) "
 
-if "%ordered%" equ "" (
+if "%musicPL%" equ "" (
 	echo Input cannot be empty!
-	goto :askMakePLOrdered
+	goto :musicOrdered
 )
 
-if "%ordered%" equ "y" (
+if "%musicPL%" equ "y" (
 	set params=^
 		--ffmpeg-location "backend\ffmpeg\ffmpeg.exe" ^
 		-ciw ^
@@ -74,7 +103,7 @@ if "%ordered%" equ "y" (
 		-o "downloads\Music\%%(uploader)s\%%(playlist_index)s - %%(title)s.%%(ext)s"
 )
 
-if "%ordered%" equ "n" (
+if "%musicPL%" equ "n" (
 	set params=^
 		--ffmpeg-location "backend\ffmpeg\ffmpeg.exe" ^
 		-ciw ^
@@ -89,7 +118,6 @@ goto :promptUrl
 :promptUrl
 	if not exist "backend\urls.txt" (
 		type nul > backend\urls.txt
-		@echo # Paste your video/playlist URLs below this line> backend\urls.txt
 		start backend\urls.txt
 
 		echo.
