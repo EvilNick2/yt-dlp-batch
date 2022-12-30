@@ -57,32 +57,32 @@ if "%videoPL%" equ "y" (
 	set params=^
 		--ffmpeg-location "backend\ffmpeg\ffmpeg.exe" ^
 		-f "bv[height<=1080][vcodec^=avc]+ba[ext=m4a]" ^
-		-a backend\urls.txt ^
+		-a backend\video_urls.txt ^
 		--embed-chapters ^
 		--embed-metadata ^
 		--embed-thumbnail ^
 		--convert-thumbnail jpg ^
 		--embed-subs ^
 		--sub-langs en.* ^
-		-o "downloads\Videos\%%(uploader)s\%%(playlist_index)s - %%(title)s.%%(ext)s"
+		-o "Downloads\Videos\%%(uploader)s\%%(playlist_index)s - %%(title)s.%%(ext)s"
 
-		goto :promptUrl
+		goto :promptVideoUrl
 )
 
 if "%videoPL%" equ "n" (
 	set params=^
 		--ffmpeg-location "backend\ffmpeg\ffmpeg.exe" ^
 		-f "bv[height<=1080][vcodec^=avc]+ba[ext=m4a]" ^
-		-a backend\urls.txt ^
+		-a backend\video_urls.txt ^
 		--embed-chapters ^
 		--embed-metadata ^
 		--embed-thumbnail ^
 		--convert-thumbnail jpg ^
 		--embed-subs ^
 		--sub-langs en.* ^
-		-o "downloads\Videos\%%(uploader)s\%%(title)s.%%(ext)s"
+		-o "Downloads\Videos\%%(uploader)s\%%(title)s.%%(ext)s"
 
-	goto :promptUrl
+	goto :promptVideoUrl
 )
 
 :musicOrdered
@@ -97,43 +97,69 @@ if "%musicPL%" equ "y" (
 	set params=^
 		--ffmpeg-location "backend\ffmpeg\ffmpeg.exe" ^
 		-ciw ^
-		-a backend\urls.txt ^
+		-a backend\music_urls.txt ^
 		-f m4a ^
 		--embed-metadata ^
-		-o "downloads\Music\%%(uploader)s\%%(playlist_index)s - %%(title)s.%%(ext)s"
+		-o "Downloads\Music\%%(uploader)s\%%(playlist_index)s - %%(title)s.%%(ext)s"
+
+	goto :promptMusicUrl
 )
 
 if "%musicPL%" equ "n" (
 	set params=^
 		--ffmpeg-location "backend\ffmpeg\ffmpeg.exe" ^
 		-ciw ^
-		-a backend\urls.txt ^
+		-a backend\music_urls.txt ^
 		-f m4a ^
 		--embed-metadata ^
-		-o "downloads\Music\%%(uploader)s\%%(title)s.%%(ext)s"
+		-o "Downloads\Music\%%(uploader)s\%%(title)s.%%(ext)s"
+
+	goto :promptMusicUrl
 )
 
-goto :promptUrl
 
-:promptUrl
-	if not exist "backend\urls.txt" (
-		type nul > backend\urls.txt
-		start backend\urls.txt
+:promptVideoUrl
+	if not exist "backend\video_urls.txt" (
+		type nul > backend\video_urls.txt
+		start backend\video_urls.txt
 
 		echo.
-		set /P pause="Paste your URLs into 'urls.txt', save the file then hit ENTER."
+		set /P pause="Paste your URLs into 'video_urls.txt', save the file then hit ENTER."
+
+		goto :download
 	) else (
-		start backend\urls.txt
+		start backend\video_urls.txt
 		
 		echo.
-		set /P pause="Paste your URLs into 'urls.txt', save the file then hit ENTER."
+		set /P pause="Paste your URLs into 'video_urls.txt', save the file then hit ENTER."
+
+		goto :download
 	)
 
 
-backend\yt-dlp.exe ^
-%params%
+:promptMusicUrl
+	if not exist "backend\music_urls.txt" (
+		type nul > backend\music_urls.txt
+		start backend\music_urls.txt
 
-echo.
-echo DOWNLOAD COMPLETE!
+		echo.
+		set /P pause="Paste your URLs into 'music_urls.txt', save the file then hit ENTER."
+
+		goto :download
+	) else (
+		start backend\music_urls.txt
+		
+		echo.
+		set /P pause="Paste your URLs into 'music_urls.txt', save the file then hit ENTER."
+
+		goto :download
+	)
+
+:download
+	backend\yt-dlp.exe ^
+	%params%
+
+	echo.
+	echo DOWNLOAD COMPLETE!
 
 pause
